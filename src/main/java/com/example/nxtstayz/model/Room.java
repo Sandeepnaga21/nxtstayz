@@ -20,6 +20,7 @@ public class Room {
     private double price;
 
     @ManyToOne
+    @JoinColumn(name = "hotelid")
     private Hotel hotel;
 
     public Room() {

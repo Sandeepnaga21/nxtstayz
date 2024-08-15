@@ -5,7 +5,7 @@ import com.example.nxtstayz.service.HotelJpaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.*;
 
 @RestController
 public class HotelController {
@@ -38,7 +38,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotels/{hotelId}/rooms")
-    public Room getHotelRoom(@PathVariable("hotelId") int hotelId) {
+    public List<Room> getHotelRoom(@PathVariable("hotelId") int hotelId) {
         return hotelJpaService.getHotelRoom(hotelId);
     }
 }

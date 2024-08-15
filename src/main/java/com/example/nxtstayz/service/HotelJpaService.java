@@ -14,6 +14,9 @@ public class HotelJpaService implements HotelRepository {
     @Autowired
     private HotelJpaRepository hotelJpaRepository;
 
+    @Autowired
+    private RoomJpaRepository roomJpaRepository;
+
     @Override
     public ArrayList<Hotel> getHotels() {
         List<Hotel> hotelsList = hotelJpaRepository.findAll();
@@ -60,6 +63,12 @@ public class HotelJpaService implements HotelRepository {
     @Override
     public void deleteHotel(int hotelId) {
         try {
+            Hotel hotel = hotelJpaRepository.findById(hotelId).get();
+            List<Room> rooms = hotel.getRooms();
+            for (Room room : rooms) {
+                room.setHotel(null);
+            }
+            roomJpaRepository.saveAll(rooms);
             hotelJpaRepository.deleteById(hotelId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -68,10 +77,10 @@ public class HotelJpaService implements HotelRepository {
     }
 
     @Override
-    public Room getHotelRoom(int hotelId) {
+    public List<Room> getHotelRoom(int hotelId) {
         try {
             Hotel hotel = hotelJpaRepository.findById(hotelId).get();
-            return hotel.getRoom();
+            return hotel.getRooms();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

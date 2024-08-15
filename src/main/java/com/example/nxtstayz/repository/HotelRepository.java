@@ -1,7 +1,7 @@
 package com.example.nxtstayz.repository;
 
 import com.example.nxtstayz.model.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public interface HotelRepository {
     ArrayList<Hotel> getHotels();
@@ -14,5 +14,5 @@ public interface HotelRepository {
 
     void deleteHotel(int hotelId);
 
-    Room getHotelRoom(int hotelId);
+    List<Room> getHotelRoom(int hotelId);
 }
