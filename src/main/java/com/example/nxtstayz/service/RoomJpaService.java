@@ -50,8 +50,13 @@ public class RoomJpaService implements RoomRepository {
 
     @Override
     public Room updateRoom(int roomId, Room room) {
-        Room newRoom = roomJpaRepository.findById(roomId).get();
         try {
+            Room newRoom = roomJpaRepository.findById(roomId).get();
+            if (room.getHotel() != null) {
+                int hotelId = room.getHotel().getHotelId();
+                Hotel newHotel = hotelJpaRepository.findById(hotelId).get();
+                newRoom.setHotel(newHotel);
+            }
             if (room.getRoomNumber() != null) {
                 newRoom.setRoomNumber(room.getRoomNumber());
             }
@@ -61,14 +66,7 @@ public class RoomJpaService implements RoomRepository {
             if (room.getPrice() != 0) {
                 newRoom.setPrice(room.getPrice());
             }
-            if (room.getHotel() != null) {
-                Hotel hotel = room.getHotel();
-                int hotelId = hotel.getHotelId();
-                Hotel nHotel = hotelJpaRepository.findById(hotelId).get();
-                newRoom.setHotel(nHotel);
-            }
-            roomJpaRepository.save(newRoom);
-            return newRoom;
+            return roomJpaRepository.save(newRoom);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

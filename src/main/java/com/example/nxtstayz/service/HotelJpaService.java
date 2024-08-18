@@ -42,8 +42,8 @@ public class HotelJpaService implements HotelRepository {
 
     @Override
     public Hotel updateHotel(int hotelId, Hotel hotel) {
-        Hotel newHotel = hotelJpaRepository.findById(hotelId).get();
         try {
+            Hotel newHotel = hotelJpaRepository.findById(hotelId).get();
             if (hotel.getHotelName() != null) {
                 newHotel.setHotelName(hotel.getHotelName());
             }
@@ -60,11 +60,10 @@ public class HotelJpaService implements HotelRepository {
         }
     }
 
-    @Override
     public void deleteHotel(int hotelId) {
         try {
             Hotel hotel = hotelJpaRepository.findById(hotelId).get();
-            List<Room> rooms = hotel.getRooms();
+            List<Room> rooms = roomJpaRepository.findByHotel(hotel);
             for (Room room : rooms) {
                 room.setHotel(null);
             }
